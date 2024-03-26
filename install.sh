@@ -20,6 +20,18 @@ else
 	echo "Python is installed!"
 fi
 
+# Confirmation prompt
+read -p "Do you want to install vooDOO? [y/n]: " choice
+case "$choice" in
+    y|Y)
+        echo "Proceeding with the installation..."
+        ;;
+    *)
+        echo "Installation aborted."
+        exit 0
+        ;;
+esac
+
 # Check if the program is already installed
 if [ -f "$INSTALL_DIR/voodoo" ]; then
     echo "The program is already installed."
@@ -36,7 +48,8 @@ if [ -f "$INSTALL_DIR/voodoo" ]; then
 fi
 
 # Clone the repository
-git clone $REPO_URL $TEMP 
+git clone $REPO_URL $TEMP
+echo "Cloned repo"
 
 # Navigate to the cloned repository directory
 cd $TEMP
@@ -58,9 +71,14 @@ chmod +x $INSTALL_DIR/voodoo
 if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
     echo 'export PATH="$PATH:$HOME/.local/bin"' >> "$HOME/.bashrc"
     echo 'export PATH="$PATH:$HOME/.local/bin"' >> "$HOME/.zshrc"
-    source "$HOME/.bashrc"
-    source "$HOME/.zshrc"
+
+    echo "$INSTALL_DIR was not found in PATH, added to PATH."
+    echo "You should probably reload your terminal session to use vooDOO."
+
+    echo "Installation completed successfully!"
+else
+	echo "You can now run the program using the 'voodoo' command."
+	echo "Installation completed successfully!"
 fi
 
-echo "Installation completed successfully!"
-echo "You can now run the program using the 'voodoo' command."
+
