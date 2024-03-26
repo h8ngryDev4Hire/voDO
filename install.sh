@@ -5,6 +5,33 @@ REPO_URL="https://github.com/h8ngryDev4Hire/Voodoo"
 INSTALL_DIR="$HOME/.local/bin"
 TEMP=".temp"
 
+# Greeting
+
+echo "vooDOO! Your Todo Task Manager | It's Not Magic, It's vooDOO!"
+
+# Check if Python is installed
+if ! command -v python &> /dev/null; then
+    echo "Python is not installed on your system."
+    echo "Please visit the official Python website to download and install Python:"
+    echo "https://www.python.org/downloads/"
+    exit 1
+fi
+
+# Check if the program is already installed
+if [ -f "$INSTALL_DIR/voodoo" ]; then
+    echo "The program is already installed."
+    read -p "Do you want to overwrite the existing installation? [y/n]: " choice
+    case "$choice" in
+        y|Y)
+            echo "Overwriting the existing installation..."
+            ;;
+        *)
+            echo "Installation aborted."
+            exit 0
+            ;;
+    esac
+fi
+
 # Clone the repository
 git clone $REPO_URL $TEMP 
 
@@ -33,4 +60,4 @@ if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
 fi
 
 echo "Installation completed successfully!"
-echo "You can now run the program using the 'todo' command."
+echo "You can now run the program using the 'voodoo' command."

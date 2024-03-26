@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-GPLv3-blue)](https://opensource.org/license/gpl-3-0)
 
-vooDOO! is a command-line utility for managing and tracking tasks using a simple TODO file format. It allows you to create, update, and mark tasks as completed, making it easy to stay organized and keep track of your pending tasks. It ain't magic, it's vooDOO!
+vooDOO! is a command-line utility for managing and tracking tasks using a simple TODO file format. It allows you to create, update, and mark tasks as completed, making it easy to stay organized and keep track of your pending tasks. It's not magic, it's vooDOO!
 
 ## Inspiration
 
