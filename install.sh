@@ -10,8 +10,9 @@ TEMP=".temp"
 echo "vooDOO! Your Todo Task Manager | It's Not Magic, It's vooDOO!"
 
 # Check if Python is installed
-if ! command -v python &> /dev/null; then
-    echo "Python is not installed on your system."
+if ! command -v python3 &> /dev/null; then
+    echo "Either Python is not installed on your system or"
+    echo "your system has an outdated version of Python installed."
     echo "Please visit the official Python website to download and install Python:"
     echo "https://www.python.org/downloads/"
     exit 1
