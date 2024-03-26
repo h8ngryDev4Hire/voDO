@@ -16,6 +16,8 @@ if ! command -v python3 &> /dev/null; then
     echo "Please visit the official Python website to download and install Python:"
     echo "https://www.python.org/downloads/"
     exit 1
+else
+	echo "Python is installed!"
 fi
 
 # Check if the program is already installed
