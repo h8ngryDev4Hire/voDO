@@ -8,7 +8,8 @@ import os
 
 
 TAB_SPACING = 3
-
+parser = argparse.ArgumentParser(
+        description='VOODOO! ')
 
     
 
@@ -21,13 +22,19 @@ def main():
     ID = counter(target)
     statuses = ['1', '2', '3']
 
-    parser = argparse.ArgumentParser(
-        description='VOODOO! ')
+
+
+    interactive = parser.add_mutually_exclusive_group() 
+    
+    interactive.add_argument(
+        '-i, --interactive', action='store_true', dest='interactive', 
+        help="Spawns an interactive session.")
+
     parser.add_argument(
-            'user_input', type=str, help='', metavar='task')
+            'user_input', type=str, help='', metavar='task', nargs="?") 
     
     parser.add_argument(
-            '-s, --status', type=str, choices=statuses, required=True, dest='status', metavar='status message', 
+            '-s, --status', type=str, choices=statuses, dest='status', metavar='status message', nargs="?", 
             help='status of Todo Task. Available Options = { 1: to-be-determined, 2: in-progress, 3: blocked }')
 
     parser.add_argument(
@@ -36,38 +43,10 @@ def main():
 
     parser.add_argument(
             '-n, --notes', type=str, metavar='extra notes', dest='notes', 
-            help="Add a note on todo task for better context.")
-
-    parser.add_argument(
-            '-i, --interactive', nargs='?', metavar='interactive', dest='interact',
-            help="Spawns an interactive session.")
-    
+            help="Add a note on todo task for better context.")    
 
     args = parser.parse_args()
-
-    if args.status:
-        if not isinstance(args.status, str):
-            parser.error('TODO task status must be a string and' 
-                        'specified using the -s or --status flags')
-
-        else:
-            match args.status:
-               case '1': 
-                   args.status = 'to-be-determined'
-               case '2': 
-                   args.status = 'in-progress'
-               case '3':
-                   args.status = 'blocked'
-
-
-
-    if not ID or not isinstance(ID, int):
-        parser.error('TODO File might\'ve been corrupted or tamperred with. '
-                     'Please remove the file or specify the -d,--delete-existing flag to force deletion.')
-    if args.delete:
-        if os.path.exists(target):
-            os.remove(target)
-
+    
     flags ={
         'ID': {
             'name': 'ID',
@@ -86,7 +65,7 @@ def main():
         },
         'STATUS':  {
             'name': 'STATUS',
-            'data': args.status,
+            'data': setStatus(args.status, interactiveModeEnabled=args.interactive),
             'status': True,
         },
         'NOTES':  {
@@ -97,6 +76,31 @@ def main():
 
     }
 
+
+    # Jumps to interactiveSession()
+    if args.interactive:
+        return interactiveSession(flags, target)
+
+
+    if not args.interactive:
+        if not args.status:
+            if not args.user_input:
+                parser.error("the following arguments are required: task, -s, --status")
+            else:
+                parser.error('the following argumens are required: -s, --status')
+
+
+
+    # Checks if file decoding was successful
+    if not ID or not isinstance(ID, int):
+        parser.error('TODO File might\'ve been corrupted or tamperred with. '
+                     'Please remove the file or specify the -d,--delete-existing flag to force deletion.')
+    if args.delete:
+        if os.path.exists(target):
+            os.remove(target)
+
+
+    
     # Iterates over flags dict to determine which flags will be appended
     # to the headers of the file
     columnWidth = {}
@@ -144,22 +148,44 @@ def main():
 
 ''' Function called by todoCheckList() function to re-encode
     Todo file with changes that were made by todoCheckList().'''
-def todoFileEncoder(file, objKeys):
-    if os.path.exists(file):
-        with  open(file, 'w') as f:
-            column_widths = {}
-            for key, items in objKeys.items():
-                for idx, item in enumerate(items):
-                    column_widths[idx] = max(column_widths.get(idx, len(item)), len(item))
+def todoFileEncoder(file, objKeys, bit):
+    with  open(file, bit) as f:
+        column_widths = {}
+        for key, items in objKeys.items():
+            for idx, item in enumerate(items):
+                column_widths[idx] = max(column_widths.get(idx, len(item)), len(item))
     
-            # Write the formatted data to the file
-            for key, items in objKeys.items():
-                formattedRow = "\t".join([item.ljust(column_widths[idx]) for idx, item in enumerate(items)])
-                f.write(formattedRow + '\n')
+        # Write the formatted data to the file
+        for key, items in objKeys.items():
+            formattedRow = "\t".join([item.ljust(column_widths[idx]) for idx, item in enumerate(items)])
+            f.write(formattedRow + '\n')
+            print(formattedRow)
+
+        print('done')
 
 
 
-            print('done')
+''' Function that sets status string'''
+def setStatus(stdin, interactiveModeEnabled=False):
+    print(interactiveModeEnabled)
+
+    if interactiveModeEnabled:
+        return stdin
+
+    match stdin:
+        case '1':
+            stdin = 'to-be-determined'
+                    
+        case '2':
+            stdin = 'in-progress'
+
+        case '3':
+            stdin = 'blocked'
+
+        case _:
+            parser.error('--status only takes the following options: [1,2,3]')
+
+    return stdin
 
 
 
@@ -225,63 +251,182 @@ def todoCheckList(file):
                            print('Please choose either \'y\' or \'n\'.')
     
     
-                # Step 2: 
+                # Step 2: Ask if task is completed
                 step2 = {
                     'done': False,
                     'response': None,
                     'previous': step1['response']
                 }
     
-                
-                print('Is this task done?')
-                    
-                while step2['done'] is False:
-                    user = input('(y/n):')
+                if step2['previous']:
+                    print('Is this task done?')
+                        
+                    while step2['done'] is False:
+                        user = input('(y/n):')
     
-                    match user:
-                        case 'y':
-                           step2['done'] = True
-                           items[3] = 'COMPLETED'
-                           step2['response'] = True
+                        match user:
+                            case 'y':
+                               step2['done'] = True
+                               items[3] = 'COMPLETED'
+                               step2['response'] = True
     
     
-                        case 'n':
-                            step2['done'] = True
-                            step2['response'] = False
+                            case 'n':
+                                step2['done'] = True
+                                step2['response'] = False
     
-                        case _:
-                            print('Please choose either \'y\' or \'n\'.')
+                            case _:
+                                print('Please choose either \'y\' or \'n\'.')
     
-                # Step 3:
+                # Step 3: Ask to update status if task not completed
                 step3 = {
                     'done': False,
                     'response': None,
                     'previous': step2['response']
                 }
-    
                 if not step3['previous']:
+                    print('Would you like to update this task\'s status?')
+                    print('Options:', 
+                          '1) To Be Determined',
+                          '2) In Progress',
+                          '3) Blocked')
+                    
+                    while step3['done'] is False:
+                        user = input('(1/2/3/n):')
+
+                        match user:
+                            case '1':
+                                step3['done'] = True
+                                items[3] = 'to-be-determined'
+        
+                            case '2':
+                                step3['done'] = True
+                                items[3] = 'in-progress'
+                        
+                            case '3':
+                                step3['done'] = True
+                                items[3] = 'blocked'
+                        
+                            case 'n':
+                                step3['done'] = True
+                
+                            case _:
+                                print('Please choose from the provided options or \'n\'.')
+
+
+                # Step 4:  Ask to update notes
+                    step4 = {
+                        'done': False,
+                        'response': None,
+                        'previous': step3['response']
+                    }
+    
                     print('Do you wish to update this task\'s notes?')
     
-                    while step3['done'] is False:
+                    while step4['done'] is False:
                         user = input('(y/n):')
     
                         match user:
                             case 'y':
                                 updateNotes = input('Enter your new notes here... \n')
-                                step3['done'] = True
+                                step4['done'] = True
                                 items[4] = updateNotes
     
                             case 'n':
-                                step3['done'] = True
+                                step4['done'] = True
     
                             case _:
                                print('Please choose either \'y\' or \'n\'.') 
-    
-                else:
-                    pass
+
+        print(checklist)
+        todoFileEncoder(file, checklist, 'w')
+
+
+
+''' Function that handles the interactive session'''
+def interactiveSession(flags, file):
+    print('INTERACTIVE MODE ENABLED')
+    NEWFILE = True if not os.path.exists(file) else False 
     
 
-        todoFileEncoder(file, checklist)
+    if NEWFILE:
+        print('Writing to new TODO file...')
+
+
+    
+    # Get task data
+    flags['TASK']['data'] = input('Task: ')
+
+    # Get status data
+    flags['STATUS']['data'] = None
+
+    
+    while type(flags['STATUS']['data']) is not str:
+        print('Give this task a status.')
+        print('Options:', 
+            '1) To Be Determined',
+            '2) In Progress',
+            '3) Blocked')
+
+        user = input('(1/2/3): ')
+
+        match user:
+            case '1':
+                 flags['STATUS']['data'] = 'to-be-determined'
+
+            case '2':
+                 flags['STATUS']['data'] = 'in-progress'
+
+            case '3':
+                flags['STATUS']['data'] = 'blocked'
+
+            case _:
+                print('Task status must be assigned!')
+     
+
+    # Get note data if user opts for it
+    print('Would you like to add any additional notes ',
+          'to this task?')
+
+    note_options = None
+
+    while note_options is None:
+        user = input('(y/n): ')
+
+        match user:
+            case 'y':
+                note_options = True
+
+            case 'n':
+                note_options = False
+
+            case _:
+                print('Please choose either y or n....')
+
+    if note_options:
+        print('Please enter any additional notes you may have...')
+
+        flags['NOTES']['data'] = input('Notes: ')
+
+    else:
+        flags['NOTES']['data'] = 'N/A'
+
+    payload = {
+        'headers': [flag['name'] for key,flag in flags.items()],
+        'data': [str(flag['data']) for key,flag in flags.items()] 
+    }
+
+    if not NEWFILE:
+        payload.pop('headers') 
+        todoFileEncoder(file, payload, 'a')
+    else:
+        todoFileEncoder(file, payload, 'w')
+
+    todoCheckList(file)
+
+
+
+
 
 
 
@@ -292,6 +437,11 @@ def counter(file):
     count = 0
 
     if os.path.exists(file):
+
+        # Checks if file is empty
+        if os.path.getsize(file) == 0:
+            return 1
+
         with open(file, 'r') as f:
             for line in f:
                 if line.strip():
@@ -312,21 +462,22 @@ def counter(file):
             if n != count:
                 return False
 
+        return numbers[-1] + 1
+
     else:
         return 1
 
 
-    return numbers[-1] + 1
+    
 
 
 
 
 if __name__ == '__main__':
-    main()  # Remove
+    main()  
 
 
-    #todoCheckList('TODO')
-    #todoFileEncoder('TODO', obj)
+
 
     
 
