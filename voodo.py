@@ -9,7 +9,7 @@ import os
 
 TAB_SPACING = 3
 parser = argparse.ArgumentParser(
-        description='VOODOO! ')
+        description='vooDO! ')
 
     
 
@@ -159,7 +159,6 @@ def todoFileEncoder(file, objKeys, bit):
         for key, items in objKeys.items():
             formattedRow = "\t".join([item.ljust(column_widths[idx]) for idx, item in enumerate(items)])
             f.write(formattedRow + '\n')
-            print(formattedRow)
 
         print('done')
 
@@ -167,7 +166,6 @@ def todoFileEncoder(file, objKeys, bit):
 
 ''' Function that sets status string'''
 def setStatus(stdin, interactiveModeEnabled=False):
-    print(interactiveModeEnabled)
 
     if interactiveModeEnabled:
         return stdin
@@ -338,7 +336,6 @@ def todoCheckList(file):
                             case _:
                                print('Please choose either \'y\' or \'n\'.') 
 
-        print(checklist)
         todoFileEncoder(file, checklist, 'w')
 
 

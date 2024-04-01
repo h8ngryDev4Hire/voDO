@@ -7,7 +7,7 @@ TEMP=".temp"
 
 # Greeting
 
-echo "vooDOO! Your Todo Task Manager | It's Not Magic, It's vooDOO!"
+echo "vooDO! Your Todo Task Manager | It's Not Magic, It's vooDO!"
 
 # Check if Python is installed
 if ! command -v python3 &> /dev/null; then
@@ -21,7 +21,7 @@ else
 fi
 
 # Confirmation prompt
-read -p "Do you want to install vooDOO? [y/n]: " choice
+read -p "Do you want to install vooDO? [y/n]: " choice
 case "$choice" in
     y|Y)
         echo "Proceeding with the installation..."
@@ -73,7 +73,7 @@ if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
     echo 'export PATH="$PATH:$HOME/.local/bin"' >> "$HOME/.zshrc"
 
     echo "$INSTALL_DIR was not found in PATH, added to PATH."
-    echo "You should probably reload your terminal session to use vooDOO."
+    echo "You should probably reload your terminal session to use vooDO."
 
     echo "Installation completed successfully!"
 else
