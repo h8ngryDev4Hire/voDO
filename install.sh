@@ -33,7 +33,7 @@ case "$choice" in
 esac
 
 # Check if the program is already installed
-if [ -f "$INSTALL_DIR/voodoo" ]; then
+if [ -f "$INSTALL_DIR/voodo" ]; then
     echo "The program is already installed."
     read -p "Do you want to overwrite the existing installation? [y/n]: " choice
     case "$choice" in
@@ -58,14 +58,14 @@ cd $TEMP
 mkdir -p $INSTALL_DIR
 
 # Move the Python script to the installation directory
-mv voodoo.py $INSTALL_DIR/voodoo
+mv voodo.py $INSTALL_DIR/voodo
 
 # Clean up the temporary repository directory
 cd ..
 rm -rf $TEMP
 
 # Make the installed script executable
-chmod +x $INSTALL_DIR/voodoo
+chmod +x $INSTALL_DIR/voodo
 
 # Add the installation directory to PATH if not already present
 if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
@@ -77,7 +77,7 @@ if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
 
     echo "Installation completed successfully!"
 else
-	echo "You can now run the program using the 'voodoo' command."
+	echo "You can now run the program using the 'voodo' command."
 	echo "Installation completed successfully!"
 fi
 
