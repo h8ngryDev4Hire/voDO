@@ -5,6 +5,8 @@
 
 vooDO! is a command-line utility for managing and tracking tasks using a simple TODO file format. It allows you to create, update, and mark tasks as completed, making it easy to stay organized and keep track of your pending tasks. It's not magic, it's vooDO!
 
+![](https://github.com/h8ngryDev4Hire/VooDO/blob/main/assets/demo.gif)
+
 ## Inspiration
 
 As a developer working on my personal projects, I find it often difficult to remember tasks that need to be done after a long day of coding. This led me down the path of creating vooDO, which I use for task tracking on my projects which has helped a lot in terms of centralizing my thoughts.
