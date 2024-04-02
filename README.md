@@ -46,7 +46,7 @@ voodo "review new NotificationManager class and apply error handling to notate.j
  - `3`: Blocked
 - `-n, --notes`: Add additional notes to the task for better context.
 - `-d, --delete-preexisting`: Delete the existing TODO file in the current working directory.
-- `-i, --interactive`: Spawn an interactive session to update task status and notes. (CURRENTLY NOT FUNCTIONAL)
+- `-i, --interactive`: Spawn an interactive session to update task status and notes. 
 
 ## TODO File Format
 
