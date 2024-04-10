@@ -430,41 +430,32 @@ def interactiveSession(flags, file):
 ''' Function that decodes the formatted TODO file 
     to get the next task ID'''
 def counter(file):
-    numbers = []
-    count = 0
-
     if os.path.exists(file):
-
-        # Checks if file is empty
+        # Checks if the file is empty
         if os.path.getsize(file) == 0:
             return 1
 
         with open(file, 'r') as f:
+            numbers = []
             for line in f:
-                if line.strip():
-                    if len(numbers) == 0:
-                        if line[0].isdigit():
-                            numbers.append(int(line[0]))
+                line = line.strip()
+                if line:
+                    # Extracts the first one or two digits from the line
+                    digits = re.findall(r'^\d{1,2}', line)
+                    if digits:
+                        numbers.append(int(digits[0]))
 
-                    elif len(numbers) >= 10:
-                        if line[0].isdigit() and line[1].isdigit():
-                            numbers.append(int(line[0] + line[1]))
+            # Checks if the numbers are consecutive
+            for i, n in enumerate(numbers, start=1):
+                if n != i:
+                    return False
 
-                    else:
-                        if line[0].isdigit():
-                            numbers.append(int(line[0]))
-
-        for n in numbers:
-            count += 1
-            if n != count:
-                return False
-
-        return numbers[-1] + 1
+            # Returns the next consecutive number
+            return numbers[-1] + 1 if numbers else 1
 
     else:
+        # Returns 1 if the file doesn't exist
         return 1
-
-
     
 
 
