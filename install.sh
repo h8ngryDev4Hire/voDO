@@ -80,5 +80,3 @@ else
 	echo "You can now run the program using the 'vodo' command."
 	echo "Installation completed successfully!"
 fi
-
-
