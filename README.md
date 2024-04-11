@@ -25,7 +25,7 @@ As a developer working on my personal projects, I find it often difficult to rem
 To install voDO, simply run the following command in your terminal:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/h8ngryDev4Hire/vodo/main/install.sh | bash
+ sh -c "$(curl -sSL https://raw.githubusercontent.com/h8ngryDev4Hire/vodo/main/install.sh)"
 ```
 
 This command will download and execute the `install.sh` script, which will clone the voDO repository, install the necessary files, and make the `vodo` command available in your system.

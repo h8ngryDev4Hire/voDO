@@ -6,7 +6,6 @@ INSTALL_DIR="$HOME/.local/bin"
 TEMP=".vodo-temp-build"
 
 # Greeting
-
 echo "voDO! Your Todo Task Manager | It's Not Magic, It's voDO!"
 
 # Check if Python is installed
