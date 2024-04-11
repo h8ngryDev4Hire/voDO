@@ -3,7 +3,7 @@
 # Set the repository URL and the desired installation directory
 REPO_URL="https://github.com/h8ngryDev4Hire/voDO"
 INSTALL_DIR="$HOME/.local/bin"
-TEMP=".temp"
+TEMP=".vodo-temp-build"
 
 # Greeting
 
