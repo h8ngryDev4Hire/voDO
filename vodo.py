@@ -9,7 +9,7 @@ import os
 
 TAB_SPACING = 3
 parser = argparse.ArgumentParser(
-        description='vooDO! ')
+        description='voDO! ')
 
     
 

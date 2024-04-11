@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Set the repository URL and the desired installation directory
-REPO_URL="https://github.com/h8ngryDev4Hire/Voodoo"
+REPO_URL="https://github.com/h8ngryDev4Hire/voDO"
 INSTALL_DIR="$HOME/.local/bin"
 TEMP=".temp"
 
 # Greeting
 
-echo "vooDO! Your Todo Task Manager | It's Not Magic, It's vooDO!"
+echo "voDO! Your Todo Task Manager | It's Not Magic, It's voDO!"
 
 # Check if Python is installed
 if ! command -v python3 &> /dev/null; then
@@ -21,7 +21,7 @@ else
 fi
 
 # Confirmation prompt
-read -p "Do you want to install vooDO? [y/n]: " choice
+read -p "Do you want to install voDO? [y/n]: " choice
 case "$choice" in
     y|Y)
         echo "Proceeding with the installation..."
@@ -33,7 +33,7 @@ case "$choice" in
 esac
 
 # Check if the program is already installed
-if [ -f "$INSTALL_DIR/voodo" ]; then
+if [ -f "$INSTALL_DIR/vodo" ]; then
     echo "The program is already installed."
     read -p "Do you want to overwrite the existing installation? [y/n]: " choice
     case "$choice" in
@@ -58,14 +58,14 @@ cd $TEMP
 mkdir -p $INSTALL_DIR
 
 # Move the Python script to the installation directory
-mv voodo.py $INSTALL_DIR/voodo
+mv vodo.py $INSTALL_DIR/vodo
 
 # Clean up the temporary repository directory
 cd ..
 rm -rf $TEMP
 
 # Make the installed script executable
-chmod +x $INSTALL_DIR/voodo
+chmod +x $INSTALL_DIR/vodo
 
 # Add the installation directory to PATH if not already present
 if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
@@ -73,11 +73,11 @@ if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
     echo 'export PATH="$PATH:$HOME/.local/bin"' >> "$HOME/.zshrc"
 
     echo "$INSTALL_DIR was not found in PATH, added to PATH."
-    echo "You should probably reload your terminal session to use vooDO."
+    echo "You should probably reload your terminal session to use voDO."
 
     echo "Installation completed successfully!"
 else
-	echo "You can now run the program using the 'voodo' command."
+	echo "You can now run the program using the 'vodo' command."
 	echo "Installation completed successfully!"
 fi
 
