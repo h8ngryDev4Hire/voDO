@@ -2,7 +2,8 @@
 
 # Set the repository URL and the desired installation directory
 REPO_URL="https://github.com/h8ngryDev4Hire/voDO"
-INSTALL_DIR="$HOME/.local/bin"
+INSTALL_DIR="$HOME/.vodo"
+EXECUTABLE_DIR="$HOME/.local/bin"
 TEMP=".vodo-temp-build"
 
 # Greeting
@@ -32,7 +33,7 @@ case "$choice" in
 esac
 
 # Check if the program is already installed
-if [ -f "$INSTALL_DIR/vodo" ]; then
+if [ -f "$EXECUTABLE_DIR/vodo" ]; then
     echo "The program is already installed."
     read -p "Do you want to overwrite the existing installation? [y/n]: " choice
     case "$choice" in
@@ -50,28 +51,39 @@ fi
 git clone $REPO_URL $TEMP
 echo "Cloned repo"
 
-# Navigate to the cloned repository directory
-cd $TEMP
+
 
 # Create the installation directory if it doesn't exist
 mkdir -p $INSTALL_DIR
 
-# Move the Python script to the installation directory
-mv vodo.py $INSTALL_DIR/vodo
+# Copy the voDO application files to the installation directory
+cp -r $TEMP/vodo $INSTALL_DIR/
+cp $TEMP/vodo.py $INSTALL_DIR/
+
+
+# Create a wrapper script for the vodo command
+cat > $EXECUTABLE_DIR/vodo <<EOL
+#!/bin/bash
+
+python3 $INSTALL_DIR/vodo.py "\$@"
+EOL
+
+# Make the wrapper script executable
+chmod +x $EXECUTABLE_DIR/vodo
+
 
 # Clean up the temporary repository directory
-cd ..
 rm -rf $TEMP
 
 # Make the installed script executable
-chmod +x $INSTALL_DIR/vodo
+chmod +x $EXECUTABLE_DIR/vodo
 
 # Add the installation directory to PATH if not already present
-if ! echo "$PATH" | grep -q "$INSTALL_DIR"; then
+if ! echo "$PATH" | grep -q "$EXECUTABLE_DIR"; then
     echo 'export PATH="$PATH:$HOME/.local/bin"' >> "$HOME/.bashrc"
     echo 'export PATH="$PATH:$HOME/.local/bin"' >> "$HOME/.zshrc"
 
-    echo "$INSTALL_DIR was not found in PATH, added to PATH."
+    echo "$EXECUTABLE_DIR was not found in PATH, added to PATH."
     echo "You should probably reload your terminal session to use voDO."
 
     echo "Installation completed successfully!"
