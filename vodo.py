@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import argparse
 import time
 import re
@@ -20,7 +19,7 @@ def main():
     HEADING = ""
     NEWLINE = "\n"
     ID = counter(target)
-    statuses = ['1', '2', '3']
+    statuses = ['1', '2', '3', '4']
 
 
 
@@ -35,7 +34,7 @@ def main():
     
     parser.add_argument(
             '-s, --status', type=str, choices=statuses, dest='status', metavar='status message', nargs="?", 
-            help='status of Todo Task. Available Options = { 1: to-be-determined, 2: in-progress, 3: blocked }')
+            help='status of Todo Task. Available Options = { 1: to-be-determined, 2: in-progress, 3: blocked, 4:cancelled }')
 
     parser.add_argument(
             '-d, --delete-preexisting', action='store_true', dest='delete',
