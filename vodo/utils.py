@@ -36,8 +36,11 @@ def setStatus(stdin, parser, interactiveModeEnabled=False):
         case '3':
             stdin = 'blocked'
 
+        case '4':
+            stdin = 'CANCELLED'
+
         case _:
-            parser.error('--status only takes the following options: [1,2,3]')
+            parser.error('--status only takes the following options: [1,2,3,4]')
 
     return stdin
 

@@ -33,18 +33,38 @@ def todoCheckList(file):
                 break
 
 
-            elif key == '1' or items[3] == 'COMPLETED':
+            elif key == '1' or items[3] == 'COMPLETED' or items[3] == 'CANCELLED':
                pass 
     
             else:
 
 
-                # Step 1: Confirm if updates were made on task
+                # checklist wizard steps
                 step1 = {
                     'done': False,
                     'response': None,
                 }
-    
+
+                step2 = {
+                    'done': False,
+                    'response': None,
+                    'previous': step1['response']
+                }
+
+                step3 = {
+                    'done': False,
+                    'response': None,
+                    'previous': step2['response']
+                }
+
+                step4 = {
+                    'done': False,
+                    'response': None,
+                    'previous': step3['response']
+                }
+
+
+                # Step 1: Confirm if updates were made on task    
                 print(f'Task ID {items[0]}:')
                 print(f'TODO: {items[1]}')
                 print(f'Status: {items[3]}.')
@@ -65,11 +85,6 @@ def todoCheckList(file):
     
     
                 # Step 2: Ask if task is completed
-                step2 = {
-                    'done': False,
-                    'response': None,
-                    'previous': step1['response']
-                }
     
                 if step2['previous']:
                     print('Is this task done?')
@@ -92,20 +107,16 @@ def todoCheckList(file):
                                 print('Please choose either \'y\' or \'n\'.')
     
                 # Step 3: Ask to update status if task not completed
-                step3 = {
-                    'done': False,
-                    'response': None,
-                    'previous': step2['response']
-                }
                 if not step3['previous']:
                     print('Would you like to update this task\'s status?')
                     print('Options:', 
                           '1) To Be Determined',
                           '2) In Progress',
-                          '3) Blocked')
+                          '3) Blocked',
+                          '4) CANCELLED')
                     
                     while step3['done'] is False:
-                        user = input('(1/2/3/n):')
+                        user = input('(1/2/3/4/n):')
 
                         match user:
                             case '1':
@@ -119,6 +130,11 @@ def todoCheckList(file):
                             case '3':
                                 step3['done'] = True
                                 items[3] = 'blocked'
+
+                            case '4':
+                                step3['done'] = True
+                                step4['done'] = True
+                                items[3] = 'CANCELLED'
                         
                             case 'n':
                                 step3['done'] = True
@@ -128,12 +144,6 @@ def todoCheckList(file):
 
 
                 # Step 4:  Ask to update notes
-                    step4 = {
-                        'done': False,
-                        'response': None,
-                        'previous': step3['response']
-                    }
-    
                     print('Do you wish to update this task\'s notes?')
     
                     while step4['done'] is False:
