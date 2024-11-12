@@ -3,7 +3,7 @@ import argparse
 import time
 import os
 from vodo.utils import todoFileEncoder, setStatus, counter
-from vodo.update import *
+from vodo.updates import *
 from vodo.interact import interactiveSession
 from vodo.checklist import todoCheckList
 
