@@ -7,13 +7,30 @@ EXECUTABLE_DIR="$HOME/.local/bin"
 TEMP=".vodo-temp-build"
 
 
-# Check if '~/.local/bin' exists 
-if ! ls $EXECUTABLE_DIR > /dev/null 2>&1; then
-	EXECUTABLE_DIR=/usr/local/bin/
-fi
-
 # Greeting
 echo "voDO! Your Todo Task Manager | It's Not Magic, It's voDO!"
+
+# Check if '~/.local/bin' exists 
+if ! ls $EXECUTABLE_DIR > /dev/null 2>&1; then
+	echo "$EXECUTABLE_DIR was not found by the system, we normally install voDO in this directory."
+	read -p "  Do you wish to create + add to PATH? [y/n]: " choice 
+	case "$choice" in
+		y|Y)
+			echo "creating $EXECUTABLE_DIR ..."
+			mkdir -p $EXECUTABLE_DIR
+			;;
+		n|N) 
+			echo "Please provide the ABSOLUTE path to install voDO on... "
+			read -p "NOTE: voDO will attempt to add this path to your PATH env variable: " EXECUTABLE_DIR 
+			;;
+		*)
+			echo "Install aborted."
+			exit 0
+			;;
+	esac
+fi
+
+
 
 # Check if Python is installed
 if ! command -v python3 &> /dev/null; then
