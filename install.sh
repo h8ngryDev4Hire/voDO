@@ -6,6 +6,12 @@ INSTALL_DIR="$HOME/.vodo"
 EXECUTABLE_DIR="$HOME/.local/bin"
 TEMP=".vodo-temp-build"
 
+
+# Check if '~/.local/bin' exists 
+if ! ls $EXECUTABLE_DIR > /dev/null 2>&1; then
+	EXECUTABLE_DIR=/usr/local/bin/
+fi
+
 # Greeting
 echo "voDO! Your Todo Task Manager | It's Not Magic, It's voDO!"
 
